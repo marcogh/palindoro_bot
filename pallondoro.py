@@ -85,6 +85,9 @@ class Dice:
             if match_re:
                 this_dices = [int(match_re.group(2))] * int(match_re.group(1))
                 self.dices.extend(this_dices)
+        # si sa mai...
+        if len(self.dices) == 0
+            self.dices = [20]
 
     def roll(self) -> int:
         return sum(map(lambda x: random.randint(1, x), self.dices))
