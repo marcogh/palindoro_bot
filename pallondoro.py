@@ -86,7 +86,7 @@ class Dice:
                 this_dices = [int(match_re.group(2))] * int(match_re.group(1))
                 self.dices.extend(this_dices)
         # si sa mai...
-        if len(self.dices) == 0
+        if len(self.dices) == 0:
             self.dices = [20]
 
     def roll(self) -> int:
