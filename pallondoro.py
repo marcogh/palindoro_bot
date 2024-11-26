@@ -15,8 +15,36 @@ from telegram.ext import (
 
 
 PERFECT = "Palindoro"
-GOOD = ["Pallindoro", "Palinduro", "Polindoro", "Pilindoro", "Palindero", "Palindorro"]
-BAD = ["Palindromo", "Pallin d'oro", "Pollindoro", "Pallonzolo"]
+GOOD = [
+    "Pallindoro",
+    "Palinduro",
+    "Polindoro",
+    "Pilindoro",
+    "Palindero",
+    "Palindorro",
+    "Polindoro",
+    "Pailindoro",
+    "Paldindoro",
+    "Palingdoro",
+    "Pallindoro",
+    "Paindoro",
+]
+BAD = [
+    "Palindromo",
+    "Pallin d'oro",
+    "Pollindoro",
+    "Pallonzolo",
+    "Palindorino",
+    "Pallidoro",
+    "Pallindoro",
+    "Palenodoro",
+    "Parindoro",
+    "Pralidoro",
+    "Pallindor",
+    "Padrindoro",
+    "Pavindoro",
+    "Polindoro",
+]
 UGLY = [
     "Pandoro",
     "Pandolino",
@@ -27,6 +55,14 @@ UGLY = [
     "Pollo d'oro",
     "Poliedro",
     "Politono",
+    "Paliandoro",
+    "Polindara",
+    "Paldorino",
+    "Palarindor",
+    "Pelinadora",
+    "Pavindura",
+    "Paldorina",
+    "Piranodora",
 ]
 
 dotenv.load_dotenv()
@@ -82,7 +118,7 @@ async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    d = Dice('1d20')
+    d = Dice("1d20")
     result = d.roll()
 
     if result == 20:
