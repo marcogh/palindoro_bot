@@ -83,7 +83,13 @@ class Dice:
         for d in temp_dices:
             match_re = re.match(r"([1-9][0-9]*)[dD]([1-9][0-9]*)", d)
             if match_re:
-                this_dices = [int(match_re.group(2))] * int(match_re.group(1))
+                dice_faces = int(match_re.group(1))
+                dice_qty = int(match_re.group(2))
+                # fallback if instead of ndn the called for dn
+                if dice_qty == 0:
+                    dice_qty = 1
+                
+                this_dices = [dice_faces] * dice_qty
                 self.dices.extend(this_dices)
         # si sa mai...
         if len(self.dices) == 0:
