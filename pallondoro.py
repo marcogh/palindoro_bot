@@ -65,6 +65,26 @@ UGLY = [
     "Piranodora",
 ]
 
+DRUID = [
+    "Human",
+    "Baboon",
+    "Badger",
+    "Cat",
+    "Deer",
+    "Draft Horse",
+    "Elk",
+    "Frog",
+    "Giant Badger",
+    "Giant Frog",
+    "Giant Rat",
+    "Hyena",
+    "Panther",
+    "Poisonous Snake",
+    "Spider",
+    "Wolf",
+    "Bear"
+]
+
 dotenv.load_dotenv()
 TOKEN = os.environ.get("TOKEN")
 
@@ -142,6 +162,11 @@ async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 
+async def wildshape(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    message = random.choice(DRUID)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
+
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     dices_request = update.effective_message.text[6:]
     d = Dice(dices_request)
@@ -169,5 +194,8 @@ if __name__ == "__main__":
 
     help_handler = CommandHandler("help", help)
     application.add_handler(help_handler)
+
+    wildshape_handler = CommandHandler("zuccaro", wildshape)
+    application.add_handler(wildshape_handler)
 
     application.run_polling()
