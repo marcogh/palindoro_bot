@@ -63,9 +63,10 @@ UGLY = [
     "Pavindura",
     "Paldorina",
     "Piranodora",
+    "Pallone d'oro",
 ]
 
-DRUID = [
+DRUID_SHAPES = [
     "Human",
     "Baboon",
     "Badger",
@@ -78,8 +79,10 @@ DRUID = [
     "Giant Frog",
     "Giant Rat",
     "Hyena",
+    "Pandoro",
     "Panther",
     "Poisonous Snake",
+    "Pollo d'oro",
     "Spider",
     "Wolf",
     "Bear"
@@ -163,7 +166,7 @@ async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def wildshape(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = random.choice(DRUID)
+    message = random.choice(DRUID_SHAPES)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 
@@ -192,10 +195,10 @@ if __name__ == "__main__":
     roll_handler = CommandHandler("roll", roll)
     application.add_handler(roll_handler)
 
-    help_handler = CommandHandler("help", help)
-    application.add_handler(help_handler)
-
     wildshape_handler = CommandHandler("zuccaro", wildshape)
     application.add_handler(wildshape_handler)
+
+    help_handler = CommandHandler("help", help)
+    application.add_handler(help_handler)
 
     application.run_polling()
