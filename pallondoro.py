@@ -127,9 +127,17 @@ logging.basicConfig(
 )
 
 
+# --- Utility per rispondere nel topic corretto ---
+async def reply_in_topic(update: Update, context: ContextTypes.DEFAULT_TYPE, text: str):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=text,
+        message_thread_id=update.effective_message.message_thread_id
+    )
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.debug(f"Update chat_it: {update.effective_chat}")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot.")
+    logging.debug(f"Update chat_id: {update.effective_chat}")
+    await reply_in_topic(update, context, "I'm a bot.")
 
 
 def is_smagni(user):
@@ -145,42 +153,37 @@ def is_smagni(user):
 
 async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if is_smagni(update.effective_user):
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id, text="Tu quoque, mi fili?"
-        )
+        await reply_in_topic(update, context, "Tu quoque, mi fili?")
         return
 
-    d = Dice("1d20")
+    d = Dice()
     result = d.roll()
 
     if result == 20:
         message = PERFECT
-    if 19 >= result > 12:
+    elif 19 >= result > 12:
         message = random.choice(GOOD)
-    if 12 >= result > 6:
+    elif 12 >= result > 6:
         message = random.choice(BAD)
     else:
         message = random.choice(UGLY)
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    await reply_in_topic(update, context, message)
 
 
 async def wildshape(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = random.choice(DRUID_SHAPES)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    await reply_in_topic(update, context, random.choice(DRUID_SHAPES))
 
 
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     dices_request = update.effective_message.text[6:]
     d = Dice(dices_request)
     # logging.debug(f"Update: {update}")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(d.roll()))
+    await reply_in_topic(update, context, str(d.roll()))
 
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="There's no help for the wyse"
-    )
+    await reply_in_topic(update, context, "There's no help for the wise")
 
 
 if __name__ == "__main__":
