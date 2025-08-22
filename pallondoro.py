@@ -9,10 +9,8 @@ from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
-    MessageHandler,
     ContextTypes,
 )
-
 
 PERFECT = "Palindoro"
 GOOD = [
@@ -93,11 +91,8 @@ TOKEN = os.environ.get("TOKEN")
 
 
 class Dice:
-    # dices: list[int] = []
-
     def __init__(self, definition=None):
         self.dices = []
-
         if definition is None or len(definition) == 0:
             self.dices = [20]
             return
@@ -108,18 +103,15 @@ class Dice:
             if match_re:
                 dice_faces = int(match_re.group(1))
                 dice_qty = int(match_re.group(2))
-                # fallback if instead of ndn the called for dn
                 if dice_qty == 0:
                     dice_qty = 1
-                
-                this_dices = [dice_faces] * dice_qty
-                self.dices.extend(this_dices)
-        # si sa mai...
+                self.dices.extend([dice_faces] * dice_qty)
+
         if len(self.dices) == 0:
             self.dices = [20]
 
     def roll(self) -> int:
-        return sum(map(lambda x: random.randint(1, x), self.dices))
+        return sum(random.randint(1, x) for x in self.dices)
 
 
 logging.basicConfig(
@@ -127,9 +119,18 @@ logging.basicConfig(
 )
 
 
+# --- Utility per rispondere nel topic corretto ---
+async def reply_in_topic(update: Update, context: ContextTypes.DEFAULT_TYPE, text: str):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=text,
+        message_thread_id=update.effective_message.message_thread_id
+    )
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.debug(f"Update chat_it: {update.effective_chat}")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot.")
+    logging.debug(f"Update chat_id: {update.effective_chat}")
+    await reply_in_topic(update, context, "I'm a bot.")
 
 
 def is_smagni(user):
@@ -145,9 +146,7 @@ def is_smagni(user):
 
 async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if is_smagni(update.effective_user):
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id, text="Tu quoque, mi fili?"
-        )
+        await reply_in_topic(update, context, "Tu quoque, mi fili?")
         return
 
     d = Dice("1d20")
@@ -155,50 +154,38 @@ async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if result == 20:
         message = PERFECT
-    if 19 >= result > 12:
+    elif 19 >= result > 12:
         message = random.choice(GOOD)
-    if 12 >= result > 6:
+    elif 12 >= result > 6:
         message = random.choice(BAD)
     else:
         message = random.choice(UGLY)
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    await reply_in_topic(update, context, message)
 
 
 async def wildshape(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = random.choice(DRUID_SHAPES)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    await reply_in_topic(update, context, message)
 
 
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     dices_request = update.effective_message.text[6:]
     d = Dice(dices_request)
-    # logging.debug(f"Update: {update}")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(d.roll()))
+    await reply_in_topic(update, context, str(d.roll()))
 
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="There's no help for the wyse"
-    )
+    await reply_in_topic(update, context, "There's no help for the wyse")
 
 
 if __name__ == "__main__":
     application = ApplicationBuilder().token(TOKEN).build()
 
-    start_handler = CommandHandler("start", start)
-    application.add_handler(start_handler)
-
-    pqualcosa_handler = CommandHandler("pqualcosa", pqualcosa)
-    application.add_handler(pqualcosa_handler)
-
-    roll_handler = CommandHandler("roll", roll)
-    application.add_handler(roll_handler)
-
-    wildshape_handler = CommandHandler("zuccaro", wildshape)
-    application.add_handler(wildshape_handler)
-
-    help_handler = CommandHandler("help", help)
-    application.add_handler(help_handler)
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("pqualcosa", pqualcosa))
+    application.add_handler(CommandHandler("roll", roll))
+    application.add_handler(CommandHandler("zuccaro", wildshape))
+    application.add_handler(CommandHandler("help", help))
 
     application.run_polling()
