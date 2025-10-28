@@ -14,8 +14,9 @@ from telegram.ext import (
 )
 
 
-PERFECT = "Palindoro"
+PERFECT = "Poliveco"
 GOOD = [
+    "Palindoro",
     "Pallindoro",
     "Palinduro",
     "Polindoro",
