@@ -29,6 +29,7 @@ GOOD = [
     "Palingdoro",
     "Pallindoro",
     "Paindoro",
+    "Pal Indoor",
 ]
 BAD = [
     "Palindromo",
