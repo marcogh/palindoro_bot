@@ -66,6 +66,7 @@ UGLY = [
     "Paldorina",
     "Piranodora",
     "Pallone d'oro",
+    "Pollo Tandoori",
 ]
 
 DRUID_SHAPES = [
