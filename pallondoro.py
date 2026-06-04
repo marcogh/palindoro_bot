@@ -34,6 +34,7 @@ GOOD = [
 BAD = [
     "Palindromo",
     "Pallin d'oro",
+    "Panin d'oro",
     "Pollindoro",
     "Pallonzolo",
     "Palindorino",
