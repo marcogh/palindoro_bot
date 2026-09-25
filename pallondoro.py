@@ -47,6 +47,7 @@ BAD = [
     "Padrindoro",
     "Pavindoro",
     "Polindoro",
+    "Palindrama",
 ]
 UGLY = [
     "Pandoro",
