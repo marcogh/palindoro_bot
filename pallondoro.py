@@ -1,18 +1,12 @@
-#!/usr/bin/env python
 import logging
 import os
-import re
 import random
+import re
+
 import dotenv
-
+import importlib.metadata
 from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    MessageHandler,
-    ContextTypes,
-)
-
+from telegram.ext import (ApplicationBuilder, CommandHandler, ContextTypes)
 
 PERFECT = "Poliveco"
 GOOD = [
@@ -188,6 +182,13 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def version(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"Version {importlib.metadata.version('palindoro-bot')}"
+    )
+
+
 if __name__ == "__main__":
     application = ApplicationBuilder().token(TOKEN).build()
 
@@ -205,5 +206,8 @@ if __name__ == "__main__":
 
     help_handler = CommandHandler("help", help)
     application.add_handler(help_handler)
+
+    version_handler = CommandHandler("version", version)
+    application.add_handler(version_handler)
 
     application.run_polling()
