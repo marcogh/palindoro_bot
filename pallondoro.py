@@ -1,21 +1,16 @@
-#!/usr/bin/env python
 import logging
 import os
-import re
 import random
+import re
+
 import dotenv
-
+import importlib.metadata
 from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    MessageHandler,
-    ContextTypes,
-)
+from telegram.ext import (ApplicationBuilder, CommandHandler, ContextTypes)
 
-
-PERFECT = "Palindoro"
+PERFECT = "Poliveco"
 GOOD = [
+    "Palindoro",
     "Pallindoro",
     "Palinduro",
     "Polindoro",
@@ -28,10 +23,12 @@ GOOD = [
     "Palingdoro",
     "Pallindoro",
     "Paindoro",
+    "Pal Indoor",
 ]
 BAD = [
     "Palindromo",
     "Pallin d'oro",
+    "Panin d'oro",
     "Pollindoro",
     "Pallonzolo",
     "Palindorino",
@@ -45,6 +42,7 @@ BAD = [
     "Pavindoro",
     "Polindoro",
     "Parlintofo",
+    "Palindrama",
 ]
 UGLY = [
     "Pandoro",
@@ -65,6 +63,7 @@ UGLY = [
     "Paldorina",
     "Piranodora",
     "Pallone d'oro",
+    "Pollo Tandoori",
 ]
 
 DRUID_SHAPES = [
@@ -187,6 +186,13 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_in_topic(update, context, "There's no help for the wise")
 
 
+async def version(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"Version {importlib.metadata.version('palindoro-bot')}"
+    )
+
+
 if __name__ == "__main__":
     application = ApplicationBuilder().token(TOKEN).build()
 
@@ -204,5 +210,8 @@ if __name__ == "__main__":
 
     help_handler = CommandHandler("help", help)
     application.add_handler(help_handler)
+
+    version_handler = CommandHandler("version", version)
+    application.add_handler(version_handler)
 
     application.run_polling()
