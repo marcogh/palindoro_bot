@@ -1,3 +1,5 @@
+#!/usr/bin/env python 
+
 import logging
 import os
 import random
@@ -126,6 +128,8 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.DEBUG
 )
 
+logger = logging.getLogger(__name__)
+
 
 # --- Utility per rispondere nel topic corretto ---
 async def reply_in_topic(update: Update, context: ContextTypes.DEFAULT_TYPE, text: str):
@@ -136,7 +140,7 @@ async def reply_in_topic(update: Update, context: ContextTypes.DEFAULT_TYPE, tex
     )
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.debug(f"Update chat_id: {update.effective_chat}")
+    logger.debug(f"Update chat_id: {update.effective_chat}")
     await reply_in_topic(update, context, "I'm a bot.")
 
 
@@ -178,12 +182,16 @@ async def wildshape(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     dices_request = update.effective_message.text[6:]
     d = Dice(dices_request)
-    # logging.debug(f"Update: {update}")
     await reply_in_topic(update, context, str(d.roll()))
+    # await context.bot.send_message(chat_id=update.effective_chat.id, text=str(d.roll()))
 
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_in_topic(update, context, "There's no help for the wise")
+    # await context.bot.send_message(
+    #     chat_id=update.effective_chat.id,
+    #     text="There's no help for the wyse"
+    # )
 
 
 async def version(update: Update, context: ContextTypes.DEFAULT_TYPE):
