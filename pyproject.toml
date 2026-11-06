@@ -1,18 +1,48 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools>=67.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "palindoro-bot"
 version = "0.1.0"
 description = "Palindoro telegram bot"
-authors = ["Marco Ghidinelli <marcogh@gmail.com>"]
+authors = [
+  { name = "Marco Ghidinelli", email = 'marcogh@gmail.com'}
+]
 license = "MIT"
 readme = "README.md"
-package-mode = false
+requires-python = ">=3.11"
+dependencies = [
+  "python-telegram-bot >= 21.7",
+  "python-dotenv >= 1.0.1"
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-python-telegram-bot = "^21.7"
-python-dotenv = "^1.0.1"
+[tool.ruff.lint]
+preview = true
+select = [
+    # pylint
+    "PL",
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # flake8-todos
+    "TD",
+    # pycode style
+    "E", "W",
+]
 
+extend-select = [
+    # flake8-copyright
+    # "CPY"
+]
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+ignore = ["F401", "E501", "E402", "UP025", "UP030", "UP032", "UP009", "PLR2004"]

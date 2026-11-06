@@ -1,17 +1,18 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 
+import importlib.metadata
 import logging
 import os
 import random
 import re
 
 import dotenv
-import importlib.metadata
 from telegram import Update
-from telegram.ext import (ApplicationBuilder, CommandHandler, ContextTypes)
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-PERFECT = "Poliveco"
+PERFECT = "Palindoro"
 GOOD = [
+    "Poliveco",
     "Palindoro",
     "Pallindoro",
     "Palinduro",
@@ -113,7 +114,7 @@ class Dice:
                 # fallback if instead of ndn the called for dn
                 if dice_qty == 0:
                     dice_qty = 1
-                
+
                 this_dices = [dice_faces] * dice_qty
                 self.dices.extend(this_dices)
         # si sa mai...
@@ -139,20 +140,22 @@ async def reply_in_topic(update: Update, context: ContextTypes.DEFAULT_TYPE, tex
         message_thread_id=update.effective_message.message_thread_id
     )
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.debug(f"Update chat_id: {update.effective_chat}")
     await reply_in_topic(update, context, "I'm a bot.")
 
 
 def is_smagni(user):
+    # piso
     if user.id == 128220550:
         return False
-    return user.username not in [
+    return user.username not in {
         "marcogh",
         "GiovanniSala",
         "giovanni_turra",
         "TheDoctor42",
-    ]
+    }
 
 
 async def pqualcosa(update: Update, context: ContextTypes.DEFAULT_TYPE):

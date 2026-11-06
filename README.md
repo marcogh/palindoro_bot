@@ -4,6 +4,16 @@ A simple telegram bot that rolls dices.
 
 # Usage
 
+## Pollo d'oro name generator
+
+```
+/pqualcosa
+
+-> paliodoro
+```
+
+## Dice Roller
+
 Defaults to a 1d20 dice:
 ```
 /roll
